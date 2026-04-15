@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import  {addItem} from './CartSlicee.jsx'
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [addToCart, setAddToCart] = useState({});
 
+    // ---------------------------------------------------------- PLANT LIST ----------------------------------------------------------------------------------//
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -212,6 +216,8 @@ function ProductList({ onHomeClick }) {
             ]
         }
     ];
+
+    //----------------------------------------------------------- PAGE STYLING ---------------------------------------------------------------------------------//
     const styleObj = {
         backgroundColor: '#4CAF50',
         color: '#fff!important',
@@ -238,6 +244,8 @@ function ProductList({ onHomeClick }) {
         onHomeClick();
     };
 
+
+    //------------------------------------------------------- FOR DISPLAYING THE VARIOUS WEBPAGES WE HAVE_----------------------------------------------------------//
     const handleCartClick = (e) => {
         e.preventDefault();
         setShowCart(true); // Set showCart to true when cart icon is clicked
@@ -250,8 +258,19 @@ function ProductList({ onHomeClick }) {
 
     const handleContinueShopping = (e) => {
         e.preventDefault();
-        setShowCart(false);
+        setShowCart(false);  // Hide the cart when navigating to About Us
     };
+
+    // Event Handler: Send an action to the store to update(add) product to the cart
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
+
+        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
+            ...prevState, // Spread the previous state to retain existing entries
+            [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
+        }));
+     };
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -274,7 +293,28 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
+                   { plantsArray.map((category, index) => (
+                    <div key={index}>
+                        <h1>
+                            <div>{category.category}</div>
+                        </h1>
+                        <div className='product-list'>
+                            {category.plants.map((plant, plantIndex) => (
+                                <div className="product-card" key={plantIndex} >
+                                    <img src={plant.image} // Display the plant image
+                                        alt={plant.name} className="product-image" />
+                                    <div className="product-title">{plant.name}</div>
+                                    <div className="product description">{plant.description}</div>
+                                    <div className="product-cost">{plant.cost}</div>
+                                
+                                    <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                </div>
 
+                        ))}
+                        </div>
+                        
+                    </div>
+                   ))}
 
                 </div>
             ) : (
