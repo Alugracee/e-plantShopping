@@ -172,6 +172,35 @@ body {
     font-size: 29px;
 
 }
+.cart-container{
+    position: relative;
+    display: inline-block;
+}
+.cart-image {
+  width: 60px;
+  height: 50px;
+  border: white;
+}
+
+/* This is the number badge */
+.cart-count {
+  position: absolute;
+  font-size: 25px;
+  font-weight: lighter;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+  font-weight: bold;
+}
 .plantname_heading{
    display: flex;
    align-items: center;
